@@ -1,0 +1,29 @@
+---
+- name: Add kali repository key
+  apt_key:
+      keyserver: pgp.mit.edu
+      id: ED444FF07D8D0BF6
+      state: present
+- name: append kali repository to source list
+  lineinfile:
+     dest: /etc/apt/sources.list
+     line: '{{ item }}'
+  with_items:
+     - deb http://http.kali.org/kali kali-rolling main contrib non-free
+- name: update cache
+  apt:
+     update_cache: yes
+- name: install packages
+  apt:
+     name: '{{ item }}'
+     state: present
+  with_items:
+     - bully
+     - mdk3
+- name: remove kali repository to source list
+  lineinfile:
+     dest: /etc/apt/sources.list
+     line: '{{ item }}'
+     state: absent
+  with_items:
+     - deb http://http.kali.org/kali kali-rolling main contrib non-free
