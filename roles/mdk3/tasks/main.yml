@@ -1,0 +1,25 @@
+---
+- name: Add kali repository key
+  apt_key:
+      keyserver: '{{ server }}'
+      id: '{{ id }}'
+      state: present
+- name: append kali repository to source list
+  lineinfile:
+     dest: /etc/apt/sources.list
+     line: '{{ kali_repo }}'
+- name: update cache
+  apt:
+     update_cache: yes
+- name: install packages
+  apt:
+     name: '{{ item }}'
+     state: present
+  with_items:
+     - bully
+     - mdk3
+- name: remove kali repository to source list
+  lineinfile:
+     dest: /etc/apt/sources.list
+     line: '{{ kali_repo }}'
+     state: absent
