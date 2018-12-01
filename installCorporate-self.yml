@@ -1,4 +1,13 @@
 ---
+  - name: Install fluxion basic packages
+    hosts: localhost
+    connection: local
+    become: yes
+    tags:
+      - fluxion
+    roles:
+      - fluxion
+      
   - name: Install fluxion missing packages
     hosts: localhost
     connection: local
